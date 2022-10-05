@@ -12,14 +12,20 @@ import {
   Th,
   Thead,
   Tr,
+  useBreakpointValue,
 } from '@chakra-ui/react'
 import { NextPage } from 'next'
 import { Header } from '../../components/Header'
 import { Sidebar } from '../../components/Sidebar'
-import { RiAddLine, RiPencilLine } from 'react-icons/ri'
+import { RiAddLine } from 'react-icons/ri'
 import { Pagination } from '../../components/Pagination'
 
 const UserList: NextPage = () => {
+  const isWideVersion = useBreakpointValue({
+    base: false,
+    lg: true,
+  })
+
   return (
     <Box>
       <Header />
@@ -37,23 +43,22 @@ const UserList: NextPage = () => {
               colorScheme="pink"
               leftIcon={<Icon as={RiAddLine} fontSize="20" />}
             >
-              Criar novo usuário
+              Criar novo
             </Button>
           </Flex>
           <Table colorScheme="whiteAlpha">
             <Thead>
-              <Tr px="6" color="gray.800" width="8">
-                <Th>
+              <Tr>
+                <Th px={['4', '4', '6']} color="gray.800" width="8">
                   <Checkbox colorScheme="pink" />
                 </Th>
                 <Th>Usuários</Th>
-                <Th>Data de cadastro</Th>
-                <Th w="8"></Th>
+                {isWideVersion && <Th>Data de cadastro</Th>}
               </Tr>
             </Thead>
             <Tbody>
-              <Tr px="6">
-                <Td>
+              <Tr>
+                <Td px={['4', '4', '6']}>
                   <Checkbox colorScheme="pink" />
                 </Td>
                 <Td>
@@ -64,21 +69,10 @@ const UserList: NextPage = () => {
                     </Text>
                   </Box>
                 </Td>
-                <Td>18 de setembro de 2022</Td>
-                <Td>
-                  <Button
-                    as="a"
-                    size="sm"
-                    fontSize="sm"
-                    colorScheme="purple"
-                    leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                  >
-                    Editar
-                  </Button>
-                </Td>
+                {isWideVersion && <Td>18 de setembro de 2022</Td>}
               </Tr>
-              <Tr px="6">
-                <Td>
+              <Tr>
+                <Td px={['4', '4', '6']}>
                   <Checkbox colorScheme="pink" />
                 </Td>
                 <Td>
@@ -89,21 +83,10 @@ const UserList: NextPage = () => {
                     </Text>
                   </Box>
                 </Td>
-                <Td>18 de setembro de 2022</Td>
-                <Td>
-                  <Button
-                    as="a"
-                    size="sm"
-                    fontSize="sm"
-                    colorScheme="purple"
-                    leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                  >
-                    Editar
-                  </Button>
-                </Td>
+                {isWideVersion && <Td>18 de setembro de 2022</Td>}
               </Tr>
-              <Tr px="6">
-                <Td>
+              <Tr>
+                <Td px={['4', '4', '6']}>
                   <Checkbox colorScheme="pink" />
                 </Td>
                 <Td>
@@ -114,18 +97,7 @@ const UserList: NextPage = () => {
                     </Text>
                   </Box>
                 </Td>
-                <Td>18 de setembro de 2022</Td>
-                <Td>
-                  <Button
-                    as="a"
-                    size="sm"
-                    fontSize="sm"
-                    colorScheme="purple"
-                    leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                  >
-                    Editar
-                  </Button>
-                </Td>
+                {isWideVersion && <Td>18 de setembro de 2022</Td>}
               </Tr>
             </Tbody>
           </Table>
