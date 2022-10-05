@@ -66,13 +66,13 @@ const Dashboard: NextPage = () => {
       <Flex w="100%" maxW={1400} mx="auto" my="6" px="6">
         <Sidebar />
         <SimpleGrid flex="1" gap="4" minChildWidth="320px" alignContent="flex-start">
-          <Box p="8" borderRadius={8} bg="gray.800" pb="4">
+          <Box p={['6', '8']} borderRadius={8} bg="gray.800" pb="4">
             <Text fontSize="lg" mb="4">
               Inscritos da semana
             </Text>
             <Chart type="area" height={160} series={series1} options={options} />
           </Box>
-          <Box p="8" borderRadius={8} bg="gray.800" pb="4">
+          <Box p={['6', '8']} borderRadius={8} bg="gray.800" pb="4">
             <Text fontSize="lg" mb="4">
               Taxa de abertura
             </Text>
