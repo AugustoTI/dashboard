@@ -22,7 +22,7 @@ import { RiAddLine } from 'react-icons/ri'
 import { Pagination } from '../../components/Pagination'
 import Link from 'next/link'
 import { useQuery } from 'react-query'
-import axios from 'axios'
+import { api } from '../../services/api'
 
 interface Users {
   users: User[]
@@ -37,7 +37,7 @@ interface User {
 
 const UserList: NextPage = () => {
   const { data, isLoading, error, isFetching } = useQuery('users', async () => {
-    const { data } = await axios.get<Users>('http://localhost:3000/api/users')
+    const { data } = await api.get<Users>('/users')
 
     const users = data.users.map(user => ({
       id: user.id,
