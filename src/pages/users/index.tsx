@@ -5,6 +5,7 @@ import {
   Flex,
   Heading,
   Icon,
+  Spinner,
   Table,
   Tbody,
   Td,
@@ -20,8 +21,38 @@ import { Sidebar } from '../../components/Sidebar'
 import { RiAddLine } from 'react-icons/ri'
 import { Pagination } from '../../components/Pagination'
 import Link from 'next/link'
+import { useQuery } from 'react-query'
+import axios from 'axios'
+
+interface Users {
+  users: User[]
+}
+
+interface User {
+  name: string
+  email: string
+  createdAt: string
+  id: number
+}
 
 const UserList: NextPage = () => {
+  const { data, isLoading, error } = useQuery('users', async () => {
+    const { data } = await axios.get<Users>('http://localhost:3000/api/users')
+
+    const users = data.users.map(user => ({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      createdAt: new Date(user.createdAt).toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      }),
+    }))
+
+    return users
+  })
+
   const isWideVersion = useBreakpointValue({
     base: false,
     lg: true,
@@ -49,62 +80,49 @@ const UserList: NextPage = () => {
               </Button>
             </Link>
           </Flex>
-          <Table colorScheme="whiteAlpha">
-            <Thead>
-              <Tr>
-                <Th px={['4', '4', '6']} color="gray.800" width="8">
-                  <Checkbox colorScheme="pink" />
-                </Th>
-                <Th>Usuários</Th>
-                {isWideVersion && <Th>Data de cadastro</Th>}
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td px={['4', '4', '6']}>
-                  <Checkbox colorScheme="pink" />
-                </Td>
-                <Td>
-                  <Box>
-                    <Text fontWeight="bold">John Doe</Text>
-                    <Text fontSize="sm" color="gray.300">
-                      JohnDoe@example.com
-                    </Text>
-                  </Box>
-                </Td>
-                {isWideVersion && <Td>18 de setembro de 2022</Td>}
-              </Tr>
-              <Tr>
-                <Td px={['4', '4', '6']}>
-                  <Checkbox colorScheme="pink" />
-                </Td>
-                <Td>
-                  <Box>
-                    <Text fontWeight="bold">John Doe</Text>
-                    <Text fontSize="sm" color="gray.300">
-                      JohnDoe@example.com
-                    </Text>
-                  </Box>
-                </Td>
-                {isWideVersion && <Td>18 de setembro de 2022</Td>}
-              </Tr>
-              <Tr>
-                <Td px={['4', '4', '6']}>
-                  <Checkbox colorScheme="pink" />
-                </Td>
-                <Td>
-                  <Box>
-                    <Text fontWeight="bold">John Doe</Text>
-                    <Text fontSize="sm" color="gray.300">
-                      JohnDoe@example.com
-                    </Text>
-                  </Box>
-                </Td>
-                {isWideVersion && <Td>18 de setembro de 2022</Td>}
-              </Tr>
-            </Tbody>
-          </Table>
-          <Pagination />
+          {isLoading ? (
+            <Flex justifyContent="center">
+              <Spinner />
+            </Flex>
+          ) : error ? (
+            <Flex justifyContent="center">
+              <Text>Falha ao obter dados dos usuários</Text>
+            </Flex>
+          ) : (
+            <>
+              <Table colorScheme="whiteAlpha">
+                <Thead>
+                  <Tr>
+                    <Th px={['4', '4', '6']} color="gray.800" width="8">
+                      <Checkbox colorScheme="pink" />
+                    </Th>
+                    <Th>Usuários</Th>
+                    {isWideVersion && <Th>Data de cadastro</Th>}
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {data &&
+                    data.map(user => (
+                      <Tr key={user.id}>
+                        <Td px={['4', '4', '6']}>
+                          <Checkbox colorScheme="pink" />
+                        </Td>
+                        <Td>
+                          <Box>
+                            <Text fontWeight="bold">{user.name}</Text>
+                            <Text fontSize="sm" color="gray.300">
+                              {user.email}
+                            </Text>
+                          </Box>
+                        </Td>
+                        {isWideVersion && <Td>{user.createdAt}</Td>}
+                      </Tr>
+                    ))}
+                </Tbody>
+              </Table>
+              <Pagination />
+            </>
+          )}
         </Box>
       </Flex>
     </Box>
