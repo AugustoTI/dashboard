@@ -36,7 +36,7 @@ interface User {
 }
 
 const UserList: NextPage = () => {
-  const { data, isLoading, error } = useQuery('users', async () => {
+  const { data, isLoading, error, isFetching } = useQuery('users', async () => {
     const { data } = await axios.get<Users>('http://localhost:3000/api/users')
 
     const users = data.users.map(user => ({
@@ -67,6 +67,7 @@ const UserList: NextPage = () => {
           <Flex mb="8" justifyContent="space-between" alignItems="center">
             <Heading size="lg" fontWeight="normal">
               Usuários
+              {!isLoading && isFetching && <Spinner size="sm" color="gray.500" ml="4" />}
             </Heading>
             <Link href="/users/create" passHref>
               <Button
