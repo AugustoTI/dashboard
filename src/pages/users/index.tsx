@@ -21,37 +21,10 @@ import { Sidebar } from '../../components/Sidebar'
 import { RiAddLine } from 'react-icons/ri'
 import { Pagination } from '../../components/Pagination'
 import Link from 'next/link'
-import { useQuery } from 'react-query'
-import { api } from '../../services/api'
-
-interface Users {
-  users: User[]
-}
-
-interface User {
-  name: string
-  email: string
-  createdAt: string
-  id: number
-}
+import { useUsers } from '../../hooks/useUsers'
 
 const UserList: NextPage = () => {
-  const { data, isLoading, error, isFetching } = useQuery('users', async () => {
-    const { data } = await api.get<Users>('/users')
-
-    const users = data.users.map(user => ({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      createdAt: new Date(user.createdAt).toLocaleDateString('pt-BR', {
-        day: '2-digit',
-        month: 'long',
-        year: 'numeric',
-      }),
-    }))
-
-    return users
-  })
+  const { data, isLoading, error, isFetching } = useUsers()
 
   const isWideVersion = useBreakpointValue({
     base: false,
